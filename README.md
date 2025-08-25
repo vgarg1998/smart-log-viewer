@@ -319,7 +319,7 @@ docker-compose logs -f server
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the VG GARG LICENSe - see the LICENSE file for details LOL!.
 
 ## 🙏 Acknowledgments
 
