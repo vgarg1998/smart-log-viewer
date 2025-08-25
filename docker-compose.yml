@@ -1,0 +1,114 @@
+
+
+services:
+  # Production Go server
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      target: production
+    container_name: smart-log-viewer-server
+    ports:
+      - "8080:8080"
+    environment:
+      - GO_ENV=production
+      - PORT=8080
+    networks:
+      - smart-log-viewer-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Production React client
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      target: production
+    container_name: smart-log-viewer-client
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_WS_URL=ws://localhost:8080/ws
+    networks:
+      - smart-log-viewer-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    depends_on:
+      - server
+
+  # Development server (hot reload)
+  server-dev:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      target: development
+    container_name: smart-log-viewer-server-dev
+    ports:
+      - "8081:8080"
+    environment:
+      - GO_ENV=development
+      - PORT=8080
+    volumes:
+      - ./server:/app
+    networks:
+      - smart-log-viewer-network
+    restart: unless-stopped
+    profiles:
+      - development
+
+  # Development client (hot reload)
+  client-dev:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      target: development
+    container_name: smart-log-viewer-client-dev
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_WS_URL=ws://localhost:8081/ws
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    networks:
+      - smart-log-viewer-network
+    restart: unless-stopped
+    depends_on:
+      - server-dev
+    profiles:
+      - development
+
+  # Optional Nginx reverse proxy for production
+  nginx:
+    image: nginx:alpine
+    container_name: smart-log-viewer-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    networks:
+      - smart-log-viewer-network
+    restart: unless-stopped
+    depends_on:
+      server:
+        condition: service_healthy
+      client:
+        condition: service_healthy
+
+networks:
+  smart-log-viewer-network:
+    driver: bridge
