@@ -72,6 +72,42 @@ A real-time log streaming application built with **Go** (WebSocket server) and *
 
 ## 🚀 Quick Start
 
+1. **Clone and Setup:**
+   ```bash
+   git clone https://github.com/vgarg1998/smart-log-viewer.git
+   cd smart-log-viewer
+   ```
+
+2. **Start Services:**
+   ```bash
+   docker compose up
+   ```
+
+3. **Access the Application:**
+   - **Direct Access:** http://localhost:3000 (React client)
+   - **Proxied Access:** http://localhost:80 (via Nginx)
+
+## Demo
+
+### Main Interface
+![Smart Log Viewer Main Interface](demo/main-interface.png)
+*The Smart Log Viewer application showing real-time log streaming with connection status, control buttons, and log filtering capabilities.*
+
+### WebSocket Communication & Heartbeat Mechanism
+![WebSocket Communication & Heartbeat](demo/websocket-heartbeat.png)
+*Developer console showing active WebSocket communication, heartbeat mechanism, and server awareness. The client and server maintain constant communication through ping/pong messages.*
+
+### State-Aware Smart Log Filtering
+![Smart Log Filtering](demo/smart-filtering.png)
+*Demonstrating intelligent log filtering with state management. Shows active filters (WARN, ERROR), filtered log count (318 of 441 logs), and real-time filter state updates.*
+
+### Key Features Demonstrated:
+- **Real-time Log Streaming:** Live log updates with timestamps and color-coded log levels
+- **Heartbeat Mechanism:** Continuous ping/pong communication ensuring server awareness
+- **Smart Filtering:** State-aware log filtering with multiple level selection
+- **WebSocket Communication:** Real-time bidirectional communication between client and server
+- **Responsive UI:** Clean, modern interface with dark theme and intuitive controls
+
 ### Prerequisites
 - **Docker** and **Docker Compose**
 - **Go 1.21+** (for local development)
