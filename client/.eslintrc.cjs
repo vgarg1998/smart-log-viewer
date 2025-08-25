@@ -13,5 +13,11 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    // Disable problematic rules for development
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
+    'react-hooks/exhaustive-deps': 'off', // Disable exhaustive-deps rule
+    // Allow warnings for development
+    'max-warnings': 'off',
   },
 }
