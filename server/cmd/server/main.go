@@ -60,7 +60,9 @@ func main() {
 
 	// Simple status endpoint
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Smart Log Viewer Server is running!\nConnect to /ws for WebSocket"))
+		if _, err := w.Write([]byte("Smart Log Viewer Server is running!\nConnect to /ws for WebSocket")); err != nil {
+			log.Printf("Error writing response: %v", err)
+		}
 	})
 
 	log.Printf("Server starting on :8080")
