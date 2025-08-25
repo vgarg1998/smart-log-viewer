@@ -78,7 +78,7 @@ export interface WebSocketConfig {
 export const DEFAULT_WS_CONFIG: WebSocketConfig = {
   url: 'ws://localhost:8080/ws',
   reconnectInterval: 5000, // 5 seconds
-  maxReconnectAttempts: 10,
+  maxReconnectAttempts: 100,
   heartbeatInterval: 30000 // 30 seconds
 };
 
