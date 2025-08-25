@@ -14,18 +14,69 @@ A real-time log streaming application built with **Go** (WebSocket server) and *
 ## 🏗️ Architecture
 
 ```
-┌─────────────────┐    WebSocket    ┌─────────────────┐
-│   React Client  │ ←──────────────→ │   Go Server     │
-│   (Port 3000)   │                 │   (Port 8080)   │
+┌─────────────────┐                                    ┌─────────────────┐
+│   Browser      │                                    │   Go Server     │
+│                │                                    │   (Port 8080)   │
+└─────────────────┘                                    └─────────────────┘
+         │                                                       │
+         │                                                       │
+         ▼                                                       │
+┌─────────────────┐                 ┌─────────────────┐         │
+│   Direct Access │                 │   Nginx Proxy   │         │
+│   Port 3000    │                 │   Port 80       │         │
+│   (Dev/Simple) │                 │   (Production)  │         │
+└─────────────────┘                 └─────────────────┘         │
+         │                                   │                   │
+         │                                   │                   │
+         ▼                                   ▼                   │
+┌─────────────────┐                 ┌─────────────────┐         │
+│   React Client  │ ◄───────────────┤   React Client  │ ◄───────┘
+│   (Port 3000)   │                 │   (Port 3000)   │
 └─────────────────┘                 └─────────────────┘
          │                                   │
          │                                   │
          ▼                                   ▼
 ┌─────────────────┐                 ┌─────────────────┐
-│   Nginx Proxy   │                 │  Mock Log Gen   │
-│   (Port 80/443) │                 │   (Every 1s)    │
+│   WebSocket     │                 │   WebSocket     │
+│   ws://8080/ws  │                 │   ws://8080/ws  │
 └─────────────────┘                 └─────────────────┘
 ```
+
+**Access Paths & Benefits:**
+
+### **🚀 Direct Access (Port 3000)**
+- **Purpose**: Development & Simple Access
+- **Benefits**: Fast, direct, no proxy overhead
+- **Use Case**: Local development, quick testing
+- **URL**: `http://localhost:3000`
+
+### **🏢 Nginx Proxy (Port 80)**
+- **Purpose**: Production & Professional Access
+- **Benefits**: Caching, security, SSL-ready (future), single entry point
+- **Use Case**: Production deployment
+- **URL**: `http://localhost` (clean, no port needed)
+
+**Key Points:**
+- Both paths lead to the same React Client (port 3000)
+- WebSocket connection goes directly to Go Server (port 8080)
+- **Dual access gives you development simplicity + production features**
+
+## 🔍 **Component Details**
+
+### **React Client (Port 3000)**
+- **Purpose**: User interface for viewing logs
+- **Features**: Real-time log display, filtering, pause/resume
+- **Access**: Direct via port 3000, or through Nginx on port 80
+
+### **Go Server (Port 8080)**
+- **Purpose**: WebSocket server for real-time log streaming
+- **Features**: Mock log generation, connection management
+- **Endpoints**: `/` (status), `/ws` (WebSocket)
+
+### **Nginx (Port 80)**
+- **Purpose**: Reverse proxy and load balancer
+- **Features**: Caching, security headers, rate limiting, SSL ready
+- **Routes**: `/` → React Client, `/ws` → Go Server, `/api/*` → Go Server
 
 ## 🚀 Quick Start
 
@@ -130,8 +181,7 @@ npm run dev
 
 ## 📁 Project Structure
 
-```
-smart-log-viewer/
+```smart-log-viewer/
 ├── .github/
 │   └── workflows/
 │       └── ci.yml                 # GitHub Actions CI/CD
@@ -330,5 +380,6 @@ This project is licensed under the VG GARG LICENSe - see the LICENSE file for de
 
 ---
 
-**Happy Log Viewing! 🎉**
-# GitHub Actions Test
+**Happy Log Viewing! 🎉**# GitHub Actions Test
+
+
