@@ -17,7 +17,6 @@ interface UseWebSocketReturn {
   sendMessage: (message: any) => void;
   reconnect: () => void;
   clearLogs: () => void;
-  addTestLog: () => void;
 }
 
 export function useWebSocket(config: Partial<WebSocketConfig> = {}): UseWebSocketReturn {
@@ -48,16 +47,6 @@ export function useWebSocket(config: Partial<WebSocketConfig> = {}): UseWebSocke
   // Clear logs function
   const clearLogs = useCallback(() => {
     setLogs([]);
-  }, []);
-  
-  // Add test log function (for development)
-  const addTestLog = useCallback(() => {
-    const testLog: LogEntry = {
-      level: 'INFO',
-      message: 'This is a test log entry',
-      timestamp: new Date().toISOString()
-    };
-    setLogs(prev => [...prev, testLog]);
   }, []);
   
   // Add log function
@@ -273,6 +262,5 @@ export function useWebSocket(config: Partial<WebSocketConfig> = {}): UseWebSocke
     sendMessage,
     reconnect,
     clearLogs,
-    addTestLog
   };
 }

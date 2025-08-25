@@ -50,22 +50,6 @@ export interface ConnectionStatus {
   reconnectAttempts: number;
 }
 
-// App state interface
-export interface AppState {
-  logs: LogEntry[];
-  isPaused: boolean;
-  connectionStatus: ConnectionStatus;
-  autoScroll: boolean;
-  maxLogs: number; // Maximum number of logs to keep in memory
-}
-
-// Log level colors for UI
-export const LOG_LEVEL_COLORS = {
-  INFO: '#00ff00',   // Green
-  WARN: '#ffff00',   // Yellow
-  ERROR: '#ff0000'   // Red
-} as const;
-
 // WebSocket configuration
 export interface WebSocketConfig {
   url: string;
@@ -82,17 +66,7 @@ export const DEFAULT_WS_CONFIG: WebSocketConfig = {
   heartbeatInterval: 30000 // 30 seconds
 };
 
-// Log filtering options
-export interface LogFilter {
-  levels: ('INFO' | 'WARN' | 'ERROR')[];
-  searchText: string;
-  startTime?: Date;
-  endTime?: Date;
-}
-
 // Export all types
 export type { LogEntry as Log };
 export type { ConnectionStatus as Status };
-export type { AppState as State };
 export type { WebSocketConfig as WSConfig };
-export type { LogFilter as Filter };
