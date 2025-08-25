@@ -182,12 +182,7 @@ function App() {
         <div style={{ fontSize: '10px', color: '#666', marginTop: '5px' }}>
           Active filters: {Array.from(selectedLogLevels).join(', ')}
         </div>
-        <div style={{ fontSize: '10px', color: '#999', marginTop: '2px' }}>
-          Debug - Set size: {selectedLogLevels.size}, Has 'all': {selectedLogLevels.has('all').toString()}
-        </div>
-        <div style={{ fontSize: '10px', color: '#999', marginTop: '2px' }}>
-          Button States: All({selectedLogLevels.has('all') ? '✓' : '✗'}) INFO({selectedLogLevels.has('INFO') ? '✓' : '✗'}) WARN({selectedLogLevels.has('WARN') ? '✓' : '✗'}) ERROR({selectedLogLevels.has('ERROR') ? '✓' : '✗'})
-        </div>
+
       </div>
 
       {/* Log Display Area */}
