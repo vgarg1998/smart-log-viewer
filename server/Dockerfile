@@ -60,7 +60,7 @@ RUN go mod download
 COPY . .
 
 # Install air for hot reload
-RUN go install github.com/cosmtrek/air@latest
+RUN go install github.com/air-verse/air@latest
 
 EXPOSE 8080
 
