@@ -44,11 +44,12 @@ if [ -d "server" ]; then
     fi
     
     # Go lint check
-    if command -v golint >/dev/null 2>&1; then
+    if command -v golangci-lint >/dev/null 2>&1; then
         echo "  Linting Go code..."
-        golint ./... || print_warning "Go linting found issues"
+        golangci-lint run ./... || print_warning "Go linting found issues"
     else
-        print_warning "golint not found, skipping Go linting"
+        print_warning "golangci-lint not found, skipping Go linting"
+        echo "  Install with: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest"
     fi
     
     # Go vet check
@@ -107,6 +108,7 @@ if [ -d "client" ]; then
         print_success "ESLint passed"
     else
         print_warning "ESLint script not found in package.json"
+        echo "  Available scripts: $(npm run --silent 2>/dev/null | head -5)"
     fi
     
     # TypeScript type check
